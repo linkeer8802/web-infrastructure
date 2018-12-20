@@ -1,5 +1,8 @@
-package com.github.linkeer8802.data.datasource;
+package com.github.linkeer8802.infrastructure.data.example.config;
 
+import com.github.linkeer8802.data.datasource.DataSource;
+import com.github.linkeer8802.data.datasource.DataSourceAspectSupport;
+import com.github.linkeer8802.data.datasource.DynamicDataSource;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -14,21 +17,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect
-public class DataSourceAspect implements Ordered {
+public class DataSourceAspect extends DataSourceAspectSupport {
 
     @Pointcut("execution(public * com.example.jdbc.service..*.*(..))")
     public void dataSourceBefore(){}
 
+    @Override
     @Before("dataSourceBefore()")
     public void doDataSourceBefore(JoinPoint joinPoint) {
-        DataSource datasource = ((MethodSignature)joinPoint.getSignature()).getMethod().getAnnotation(DataSource.class);
-        if (datasource != null) {
-            DynamicDataSource.DataSourceHolder.setDataSource(datasource.value());
-        }
-    }
-
-    @Override
-    public int getOrder() {
-        return 0;
+        super.doDataSourceBefore(joinPoint);
     }
 }

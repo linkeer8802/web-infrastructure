@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    master:
+      url: jdbc:mysql://10.10.1.227:3366/test
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+    slave:
+      url: jdbc:mysql://10.10.1.227:3367/test
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: "localhost"
+    password: "redis@98Do1"
+    database: 0
+  cache:
+    type: redis
+
+logging:
+  level:
+#    root: debug
+    org.springframework.web: DEBUG
+    org.springframework.jdbc: DEBUG
+    org.springframework.cache: DEBUG
+
+
