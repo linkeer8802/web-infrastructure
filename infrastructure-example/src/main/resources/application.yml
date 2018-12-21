@@ -1,15 +1,15 @@
 spring:
-  datasource:
-    master:
-      url: jdbc:mysql://10.10.1.227:3366/test
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.jdbc.Driver
-    slave:
-      url: jdbc:mysql://10.10.1.227:3367/test
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.jdbc.Driver
+#  datasource:
+#    master:
+#      url: jdbc:mysql://10.10.1.227:3366/test
+#      username: root
+#      password: 123456
+#      driver-class-name: com.mysql.jdbc.Driver
+#    slave:
+#      url: jdbc:mysql://10.10.1.227:3367/test
+#      username: slave_user
+#      password: 123456
+#      driver-class-name: com.mysql.jdbc.Driver
   redis:
     host: "localhost"
     password: "redis@98Do1"
@@ -24,4 +24,84 @@ logging:
     org.springframework.jdbc: DEBUG
     org.springframework.cache: DEBUG
 
+#sharding:
+#  jdbc:
+#    datasource:
+#      names: master,slave0
+#      master:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://10.10.1.227:3366/test?useUnicode=true&characterEncoding=UTF-8
+#        username: root
+#        password: 123456
+#      slave0:
+#        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: com.mysql.jdbc.Driver
+#        url: jdbc:mysql://10.10.1.227:3367/test?useUnicode=true&characterEncoding=UTF-8
+#        username: slave_user
+#        password: 123456
+#    config:
+#      masterslave:
+#        name: ms
+#        master-data-source-name: master
+#        slave-data-source-names: slave0
+#        props:
+#          sql:
+#            show: true
 
+sharding:
+  jdbc:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://10.10.1.227:3307/test?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://10.10.1.227:3308/test?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+    config:
+      sharding:
+        default-database-strategy:
+          inline:
+            sharding-column: id
+            algorithm-expression: ds${id.hashCode() % 2}
+        tables:
+          t_student:
+            actualDataNodes: ds${0..1}.t_student${0..1}
+            table-strategy:
+              inline:
+                sharding-column: age
+                algorithm-expression: t_student${age % 2}
+        props:
+          sql:
+            show: true
+
+#dataSources:
+#  ds0: "!!com.alibaba.druid.pool.DruidDataSource"
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://10.10.1.227:3307/test?useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 123456
+#  ds1: "!!com.alibaba.druid.pool.DruidDataSource"
+#    driverClassName: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://10.10.1.227:3308/test?useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 123456
+#
+#tables:
+#  t_order:
+#    actualDataNodes: ds${0..1}.t_order${0..1}
+#    databaseStrategy:
+#      inline:
+#        shardingColumn: user_id
+#        algorithmInlineExpression: ds${user_id % 2}
+#    tableStrategy:
+#      inline:
+#        shardingColumn: order_id
+#        algorithmInlineExpression: t_order${order_id % 2}

@@ -6,8 +6,11 @@ import com.github.linkeer8802.data.entity.Pageable;
 import com.github.linkeer8802.data.entity.Sort;
 import com.github.linkeer8802.data.repository.PagingAndSortingRepository;
 import com.github.linkeer8802.infrastructure.data.example.domain.Student;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,10 +22,15 @@ import java.util.List;
 @CacheConfig("student")
 public class StudentRepositoryImpl implements StudentRepository, PagingAndSortingRepository<Student, String> {
 
+    @Resource
+    JdbcTemplate jdbcTemplate;
+
     @Override
     @CachePut
-    public <S extends Student> S save(S entity) {
-        return entity;
+    public <S extends Student> S save(S student) {
+        jdbcTemplate.update("INSERT INTO t_student(id,name,age,email,mobile) VALUES(?,?,?,?,?)",
+            student.getId(), student.getName(), student.getAge(), student.getEmail(), student.getMobile());
+        return student;
     }
 
     @Override
@@ -34,7 +42,7 @@ public class StudentRepositoryImpl implements StudentRepository, PagingAndSortin
     @Override
     @Cacheable(firstArgValueAsKey = true)
     public Student findById(String id) {
-        return null;
+        return jdbcTemplate.queryForObject("SELECT * FROM t_student WHERE id=?", new BeanPropertyRowMapper<>(Student.class), id);
     }
 
     @Override

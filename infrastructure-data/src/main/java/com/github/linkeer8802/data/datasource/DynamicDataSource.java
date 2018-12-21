@@ -14,9 +14,9 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        String dataSource = DataSourceHolder.getDataSource();
+        DataSourceType dataSource = DataSourceHolder.getDataSource();
         if (dataSource == null) {
-            dataSource = "master";
+            dataSource = DataSourceType.MASTER;
         }
 
         log.info("Using dataSource " + dataSource);
@@ -28,16 +28,16 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
 
     public static class DataSourceHolder {
         //线程本地环境
-        private static final ThreadLocal<String> dataSources = new ThreadLocal<String>();
+        private static final ThreadLocal<DataSourceType> dataSources = new ThreadLocal<DataSourceType>();
 
         //设置数据源
-        public static void setDataSource(String customerType) {
+        public static void setDataSource(DataSourceType customerType) {
             dataSources.set(customerType);
         }
 
         //获取数据源
-        public static String getDataSource() {
-            return (String) dataSources.get();
+        public static DataSourceType getDataSource() {
+            return dataSources.get();
         }
 
         //清除数据源

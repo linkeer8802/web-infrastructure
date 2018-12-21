@@ -1,4 +1,4 @@
-package com.github.linkeer8802.infrastructure.data.example.config;
+package com.github.linkeer8802.infrastructure.data.example.config.aop;
 
 import com.github.linkeer8802.data.cache.CacheAspectSupport;
 import com.github.linkeer8802.data.cache.RepositoryCache;
@@ -21,7 +21,7 @@ public class CacheAspect extends CacheAspectSupport {
     @Resource
     RepositoryCache repositoryCache;
 
-    @Pointcut("execution(public * com.example.jdbc.repository..*.*(..))")
+    @Pointcut("execution(public * com.github.linkeer8802.infrastructure.data.example.repository..*.*(..))")
     public void cacheAround(){}
 
     @Override

@@ -30,7 +30,9 @@ public class StudentController {
 
     @GetMapping("/save")
     public Object save() {
-        Student student = new Student(UUID.randomUUID().toString(), "赵六", 25);
+        Student student = new Student(UUID.randomUUID().toString(), "张三", 21);
+        student.setEmail("6625446@qq.com");
+        student.setMobile("13888886588");
         student = studentService.save(student);
         return student;
     }
