@@ -7,7 +7,6 @@ import com.github.linkeer8802.data.entity.PageRequest;
 import com.github.linkeer8802.data.entity.Sort;
 import com.github.linkeer8802.infrastructure.data.example.domain.Student;
 import com.github.linkeer8802.infrastructure.data.example.repository.StudentRepository;
-import io.shardingsphere.api.HintManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +57,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @DataSource(DataSourceType.SLAVE)
     public Student findById(String id) {
-//        HintManager hintManager = HintManager.getInstance();
-//        hintManager.setMasterRouteOnly();
         return studentRepository.findById(id);
     }
 

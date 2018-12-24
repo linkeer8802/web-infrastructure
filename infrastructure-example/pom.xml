@@ -43,7 +43,7 @@
             <version>5.1.46</version>
         </dependency>
         <!--sharding-jdbc start-->
-        <dependency>
+<!--        <dependency>
             <groupId>io.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
             <version>3.0.0</version>
@@ -52,7 +52,7 @@
             <groupId>io.shardingsphere</groupId>
             <artifactId>sharding-jdbc-spring-namespace</artifactId>
             <version>3.0.0</version>
-        </dependency>
+        </dependency>-->
         <!--sharding-jdbc end-->
 
         <dependency>

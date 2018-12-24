@@ -28,7 +28,7 @@ public class StudentRepositoryImpl implements StudentRepository, PagingAndSortin
     @Override
     @CachePut
     public <S extends Student> S save(S student) {
-        jdbcTemplate.update("INSERT INTO t_student(id,name,age,email,mobile) VALUES(?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO student(id,name,age,email,mobile) VALUES(?,?,?,?,?)",
             student.getId(), student.getName(), student.getAge(), student.getEmail(), student.getMobile());
         return student;
     }
@@ -42,7 +42,7 @@ public class StudentRepositoryImpl implements StudentRepository, PagingAndSortin
     @Override
     @Cacheable(firstArgValueAsKey = true)
     public Student findById(String id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM t_student WHERE id=?", new BeanPropertyRowMapper<>(Student.class), id);
+        return jdbcTemplate.queryForObject("SELECT * FROM student WHERE id=?", new BeanPropertyRowMapper<>(Student.class), id);
     }
 
     @Override
